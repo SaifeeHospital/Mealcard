@@ -1,0 +1,174 @@
+﻿@model HRSoftware.Models.dashboardmodel
+
+@{
+    ViewBag.Title = "Edit - Employee Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+    </script>
+}
+<section class="section">
+    <h1 class="section-header">
+        <div>Edit - Employee Information</div>
+    </h1>
+
+
+    <div class="section-body">       
+
+        <h2 class="section-title">Data Entry Form</h2>      
+
+        @using (Html.BeginForm("EditEmp", "Home", FormMethod.Post))
+        {
+            <!-- Horizontal Form -->
+    <div class="form-horizontal">
+        <div class="row mb-3">
+            <label for="lblcustname" class="col-sm-2 col-form-label">Emp Code: </label>
+            <div class="col-sm-3">
+                @Html.HiddenFor(model => model.trnno)
+                @Html.EditorFor(model => model.empcode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Code", @style = "width:15% !important; min-width:120px;", @Disabled = "Disabled" } })
+                @Html.ValidationMessageFor(model => model.empcode, "", new { @class = "text-danger" })
+            </div>
+            <label for="lblcustcont" class="col-sm-1 col-form-label">Name:</label>
+            <div class="col-sm-3">
+                @Html.EditorFor(model => model.empname, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Name", @style = "width:50% !important; min-width:400px;" } })
+                @Html.ValidationMessageFor(model => model.empname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="row mb-3">
+            <label for="lblcustname" class="col-sm-2 col-form-label">Designation: </label>
+            <div class="col-sm-3">
+                @Html.EditorFor(model => model.designation, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Designation", @style = "width:70% !important; min-width:700px;" } })
+            </div>
+        </div>
+
+
+        <div class="row mb-3">
+            <label for="lblcustname" class="col-sm-2 col-form-label">Department: </label>
+            <div class="col-sm-3">
+                @Html.EditorFor(model => model.department, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Department", @style = "width:70% !important; min-width:700px;" } })
+            </div>
+        </div>
+
+
+        <div class="row mb-3">
+            <label for="lbldob" class="col-sm-2 col-form-label">From Date</label>
+            <div class="col-sm-3">
+                @Html.TextBoxFor(model => model.fromdt, new { @class = "form-control", @style = "width:25% !important; min-width:200px;" })
+                @Html.ValidationMessageFor(model => model.fromdt, "", new { @class = "error" })
+            </div>
+            &nbsp;&nbsp;&nbsp;
+            <label for="lbldob" class="col-sm-1 col-form-label">To Date</label>
+            <div class="col-sm-3">
+                @Html.TextBoxFor(model => model.todt, new { @class = "form-control", @style = "width:25% !important; min-width:200px;" })
+                @Html.ValidationMessageFor(model => model.todt, "", new { @class = "error" })
+            </div>
+        </div>
+
+
+
+        <div class="row mb-3">
+            <div class="col-sm-2">
+                <b>BREAKFAST</b>
+            </div>
+            <div class="col-sm-5">
+                Yes
+                @Html.RadioButtonFor(model => model.breakfast, "Yes", new { Checked = "checked" })
+                No
+                @Html.RadioButtonFor(model => model.breakfast, "No")
+            </div>
+        </div>
+
+
+
+        <div class="row mb-3">
+            <div class="col-sm-2">
+                <b>LUNCH</b>
+            </div>
+            <div class="col-sm-5">
+                Yes
+                @Html.RadioButtonFor(model => model.lunch, "Yes", new { Checked = "checked" })
+                No
+                @Html.RadioButtonFor(model => model.lunch, "No")
+            </div>
+        </div>
+
+
+        <div class="row mb-3">
+            <div class="col-sm-2">
+                <b>DINNER</b>
+            </div>
+            <div class="col-sm-5">
+                Yes
+                @Html.RadioButtonFor(model => model.dinner, "Yes", new { Checked = "checked" })
+                No
+                @Html.RadioButtonFor(model => model.dinner, "No")
+            </div>
+        </div>
+
+
+        <div class="row mb-3">            
+            <div class="col-sm-3">
+                <img src="@Url.Content(Model.imgpth)" alt="Image" />
+            </div>
+        </div>
+
+        @*<table class="table table-bordered table-condensed table-hover table-striped" id="TblList">
+            <tr>
+                <th align="center"><u>Live Camera</u></th>
+                <th align="center"><u>Captured Picture</u></th>
+            </tr>
+            <tr>
+                <td><div id="webcam"></div></td>
+                <td><img id="imgCapture" /></td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <input type="button" id="btnCapture" value="Capture" />
+                </td>
+                <td align="center">
+                    <input type="button" id="btnUpload" value="Upload" disabled="disabled" />
+                </td>
+            </tr>
+        </table>*@
+    </div>
+
+
+
+
+            <div class="row mb-3">
+                <div class="col-sm-5">
+                    <input type="submit" value="Submit" name="SaveQuick" class="btn btn-success" />
+                    @*<input type="submit" value="Cancel" name="CancelQuick" class="btn btn-success" />*@
+                </div>
+            </div>
+        }
+
+    </div>
+    @*</div>*@
+
+</section>
+
+
+<script type="text/javascript" src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+
+
+<style>
+    .myClass label {
+        font-weight: bold;
+        font-size: 20px
+    }
+</style>
+

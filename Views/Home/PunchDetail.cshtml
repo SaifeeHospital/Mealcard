@@ -1,0 +1,316 @@
+﻿@model HRSoftware.Models.dashboardmodel
+
+@{
+    ViewBag.Title = "Punch Detail";
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" name="viewport">
+    <title>HR - MEAL TICKET SOFTWARE</title>
+    <link rel="stylesheet" href="../dist/modules/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../dist/modules/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="../dist/modules/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css">
+
+    <link rel="stylesheet" href="../dist/modules/summernote/summernote-lite.css">
+    <link rel="stylesheet" href="../dist/modules/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="../dist/css/demo.css">
+    <link rel="stylesheet" href="../dist/css/style.css">
+
+
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script type="text/javascript">
+        function DisableBackButton() { window.history.forward(); }
+        setTimeout("DisableBackButton()", 0);
+        window.onunload = function () { null };
+    </script>
+
+
+
+
+    <script type="text/javascript">
+        function getcurdate() {
+
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            let mm = today.getMonth() + 1; // Months start at 0!
+            let dd = today.getDate();
+
+            if (dd < 10) dd = '0' + dd;
+            if (mm < 10) mm = '0' + mm;
+
+            const formattedToday = dd + '/' + mm + '/' + yyyy;
+
+
+
+            var a = new Date();
+            var x = a.toLocaleString();
+            document.getElementById("punchtm").value = formattedToday
+            //SetTimer()
+        }
+
+
+        //function SetTimer() {
+        //    var myfunc = setInterval(getcurdate, 1000)
+        //}
+    </script>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#empcode").change(function () {
+            var id = $("#empcode").val();
+            $.ajax({
+                url: '/Home/ReadBarcode?id=' + id,
+                success: function (response) {
+                    $('#empcode').val(response.empcode);
+                    $('#empname').val(response.empname);
+                    $('#breakfast').val(response.breakfast);
+                    $('#lunch').val(response.lunch);
+                    $('#dinner').val(response.dinner);
+                   // $('#typ').val(response.typ)
+
+                    var modulelist = new Object();
+
+
+                    // Display the value (you can do whatever you want with the value here)
+                    //alert('Textbox Value: ' + textboxValue);
+                    modulelist.empcode = $('#empcode').val();
+                    modulelist.empname = $('#empname').val();
+                    modulelist.breakfast = $('#breakfast').val();
+                    modulelist.lunch = $('#lunch').val();
+                    modulelist.dinner = $('#dinner').val();
+
+                    var empcode = $('#empcode').val();
+                    var typ = $('#typ').val();
+                    var punchdt = $('#punchtm').val();
+                    var crtid = "admin";
+                    //modulelist.typ = $('#typ').val();
+                   // alert($('#typ').val());
+
+                    //punctime = document.getElementById("punchtm").value;
+                    //if (typ != "") {
+                        if (modulelist.empcode != "") {
+                            if ($('#typ').val() == 1 && modulelist.breakfast == "Yes") {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "@Url.Action("AddStockItem", "Home")",
+                                    //url: '/insertdata',
+                                    async: false,
+                                    //data: "{'empcode':'" + modulelist.empcode + "','typ':1,'punchdt':'" & punchdt & "','crtid':'" + crtid + "'}",
+                                    data: "{'empcode':'" + empcode + "','typ':'" + typ + "','punchdt':'" + punchdt + "','crtid':'" + crtid + "'}",
+                                    //data: JSON.stringify(modulelist),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (response) {
+                                        alert("Record Saved");
+                                        $('#empcode').val("");
+                                        $('#empname').val("");
+                                        $('#breakfast').val("");
+                                        $('#lunch').val("");
+                                        $('#dinner').val("");
+                                        $('#empcode').focus();
+                                    },
+                                    error: function (response) {
+                                        alert(response);
+                                    }
+                                });
+                            }
+                            else if ($('#typ').val() == 2 && modulelist.lunch == "Yes") {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "@Url.Action("AddStockItem", "Home")",
+                                    data: "{'empcode':'" + empcode + "','typ':'" + typ + "','punchdt':'" + punchdt + "','crtid':'" + crtid + "'}",
+                                    //data: JSON.stringify(modulelist),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (response) {
+                                        alert("Record Saved");
+                                        $('#empcode').val("");
+                                        $('#empname').val("");
+                                        $('#breakfast').val("");
+                                        $('#lunch').val("");
+                                        $('#dinner').val("");
+                                        $('#empcode').focus();
+                                    },
+                                    error: function (response) {
+                                        alert(response);
+                                    }
+                                });
+                            }
+                            else if ($('#typ').val() == 3 && modulelist.dinner == "Yes") {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "@Url.Action("AddStockItem", "Home")",
+                                    data: "{'empcode':'" + empcode + "','typ':'" + typ + "','punchdt':'" + punchdt + "','crtid':'" + crtid + "'}",
+                                    //data: JSON.stringify(modulelist),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (response) {
+                                        alert("Record Saved");
+                                        $('#empcode').val("");
+                                        $('#empname').val("");
+                                        $('#breakfast').val("");
+                                        $('#lunch').val("");
+                                        $('#dinner').val("");
+                                        $('#empcode').focus();
+                                    },
+                                    error: function (response) {
+                                        alert(response);
+                                    }
+                                });
+                            }
+                            else
+                                alert("Not Active for Selected Type");
+                                    $('#empcode').val("");
+                                    $('#empname').val("");
+                                    $('#breakfast').val("");
+                                    $('#lunch').val("");
+                                    $('#dinner').val("");
+                                    $('#empcode').focus();
+
+                        }
+                       // else {
+                        //    alert("Please Select Type")
+
+                   // }
+                    //}
+                   /* $("#EditorRow").html(response);*/
+                },
+                error: function (response) {
+                    alert("Opps Not Registered");
+                    $('#empcode').val("");
+                    $('#empname').val("");
+                    $('#breakfast').val("");
+                    $('#lunch').val("");
+                    $('#dinner').val("");
+                    $('#empcode').focus();
+                   // alert(response.responseText);
+                    }
+                
+                });        
+            return false;
+        });
+    });
+    </script>
+</head>
+
+<body onload="getcurdate()">
+    <div id="app">
+        <div class="main-wrapper">
+            <div class="navbar-bg"></div>
+            <nav class="navbar navbar-expand-lg main-navbar">
+                <form class="form-inline mr-auto">
+                    <ul class="navbar-nav mr-3">
+                        <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="ion ion-navicon-round"></i></a></li>
+                        <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="ion ion-search"></i></a></li>
+                    </ul>
+                    <div class="search-element">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn" type="submit"><i class="ion ion-search"></i></button>
+                    </div>
+                </form>
+                <ul class="navbar-nav navbar-right">
+                    <li class="dropdown dropdown-list-toggle">
+                        <a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="ion ion-ios-bell-outline"></i></a>
+                        <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                            <div class="dropdown-header">
+                                No New Notifications
+                                <div class="float-right">
+                                    <a href="#">View All</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg">
+                            <i class="ion ion-android-person d-lg-none"></i>
+                            <div class="d-sm-none d-lg-inline-block">Hi, @Session["username"]</div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            @*<a href="profile.html" class="dropdown-item has-icon">
+                                <i class="ion ion-android-person"></i> Profile
+                            </a>*@
+                            <a href="~/Login/index" class="dropdown-item has-icon">
+                                <i class="ion ion-log-out"></i> Logout
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <div class="main-content">
+                <h2>Punch Detail</h2>
+
+                <section class="section">
+
+                    <div class="section-body">
+
+                        <h2 class="section-title">Data Entry Form</h2>
+
+                        @using (Html.BeginForm())
+                        {
+                            <!-- Horizontal Form -->
+                            <div class="form-horizontal">
+
+
+                                <div class="row mb-10">
+                                    <label for="lblcustname" class="col-sm-2 col-form-label">Punch Datetime: </label>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(model => model.punchtm, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @placeholder = "Puch Date Time", @Value = @DateTime.Now.ToShortDateString(), @type="Date"} })
+                                        @Html.ValidationMessageFor(model => model.punchtm, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row mb-10">
+                                    <label for="lblcustname" class="col-sm-2 col-form-label">Select Type: </label>
+                                    <div class="col-sm-3">
+                                        @Html.DropDownListFor(model => model.typ, Model.typlist, "Please Select Type", new { @class = "form-control", @style = "width:100% !important; min-width:800px;" })
+                                        @Html.ValidationMessageFor(model => model.typ, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row mb-10">
+                                    <label for="lblcustname" class="col-sm-2 col-form-label">Emp Code: </label>
+                                    <div class="col-sm-3">
+                                        @Html.HiddenFor(model => model.trnno)
+                                        @Html.HiddenFor(model => model.breakfast)
+                                        @Html.HiddenFor(model => model.lunch)
+                                        @Html.HiddenFor(model => model.dinner)
+                                        @Html.EditorFor(model => model.empcode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Scan Code", @style = "width:80% !important; min-width:800px;" } })
+                                        @Html.ValidationMessageFor(model => model.empcode, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+
+                                <div class="row mb-10">
+                                    <label for="lblcustcont" class="col-sm-2 col-form-label">Name: </label>
+                                    <div class="col-sm-3">
+                                        @Html.EditorFor(model => model.empname, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Name", @style = "width:50% !important; min-width:400px;" } })
+                                        @Html.ValidationMessageFor(model => model.empname, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+                        }
+
+                    </div>
+                    @*</div>*@
+
+                </section>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

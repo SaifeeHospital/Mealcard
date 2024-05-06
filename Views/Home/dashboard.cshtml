@@ -1,0 +1,149 @@
+﻿@model IEnumerable<HRSoftware.Models.dashboardmodel>
+
+@{
+    ViewBag.Title = "dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<script type="text/javascript" src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="~/Scripts/jquery.dataTables.min.js"></script>
+<link href="~/Scripts/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+
+
+    // $(function () {
+    $.ajax({
+        type: "GET",
+        url: "/Home/_dashboard",
+        data: '{}',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: OnSuccess,
+        failure: function (response) {
+            alert(response.d);
+        },
+        error: function (response) {
+            alert(response.d);
+        }
+    });
+    //});
+
+
+
+    function OnSuccess(response) {
+        $("#TblList").DataTable({
+            bLengthChange: true,
+            lengthMenu: [[10, 20, -1], [10, 20, "All"]],
+            bFilter: true,
+            bSort: true,
+            bPaginate: true,
+            data: response,
+            columns: [
+                { 'data': 'trnno' },
+                { 'data': 'empcode' },
+                { 'data': 'empname' },
+                { 'data': 'breakfast' },
+                { 'data': 'lunch' },
+                { 'data': 'dinner' },
+                { 'data': 'todt' },
+                {
+                    mRender: function (data, type, row) {
+                        return '<a href="/Home/EditEmp?empno=' + row.empcode + '" class="table-edit" data-id="typecode" onclick="Edit(' + row.empcode + ')">Edit Form</a>'
+                    }
+                },
+                {
+                    mRender: function (data, type, row) {
+                        return '<a href="/Home/MealDetails?empno=' + row.empcode + '" class="table-edit" data-id="typecode" onclick="Edit(' + row.empcode + ')">Details</a>'
+                    }
+                },
+                {
+                    mRender: function (data, type, row) {
+                        return '<a href="../RptCardPrint.aspx?YourDataKey=' + row.empcode + '" class="table-edit" target="_blank" >Print</a>'
+                    }
+                },
+            ],
+            columnDefs: [{
+                "targets": "_all",
+                "data": null
+                //"defaultContent": "<a class='fa fa-list' onclick='GetUsersDetails(this)' title='Code Decode List' href='javascript:;'>View List</a>"
+            }]
+        });
+    };
+
+
+
+</script>
+
+
+@*<style>
+    .tb {
+        border-collapse: collapse;
+        width: 300px;
+    }
+
+        .tb th, .tb td {
+            padding: 5px;
+            border: solid 1px #777;
+        }
+
+        .tb th {
+            background-color: lightblue;
+        }
+</style>*@
+
+    <section class="section">
+        <h1 class="section-header">
+            <div>Active - Meal Card Members</div>
+        </h1>
+       
+
+        <div class="section-body">
+            @*<div class="jumbotron">*@
+                <h3>
+                    @Html.ActionLink("Create New Card ", "CreateCard", "Home",  htmlAttributes: null)
+                </h3>
+            @*</div>*@
+
+            <h2 class="section-title">Staff Data</h2>
+            <div class="row">
+                <table class="table table-bordered table-condensed table-hover table-striped tb" id="TblList">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.trnno)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.empcode)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.empname)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.breakfast)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.lunch)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.dinner)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.todt)
+                            </th>
+                            <th>Edit</th>
+                            <th>MealDetails</th>
+                            <th>Print</th>
+
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+</section>
+
+

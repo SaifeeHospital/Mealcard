@@ -1,0 +1,139 @@
+﻿@model IEnumerable < HRSoftware.Models.dashboardmodel>
+
+@{
+    ViewBag.Title = "Meal Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Meal Details</h2>
+
+
+<script type="text/javascript" src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="~/Scripts/jquery.dataTables.min.js"></script>
+<link href="~/Scripts/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const empno = urlParams.get('empno');
+    const ajaxUrl = "/Home/_MealDetails?empno=" + empno;
+
+    //var empno = urlParams.get('empno');
+    //const urlpth = "/Home/_MealDetails?empno" + empno
+    // $(function () {
+    $.ajax({
+        type: "GET",
+        url: ajaxUrl, // "/Home/_MealDetails?",
+       // data: {},
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: OnSuccess,
+        failure: function (response) {
+            alert(response.d);
+        },
+        error: function (response) {
+            alert(response.d);
+        }
+    });
+    //});
+
+
+
+    function OnSuccess(response) {
+        $("#TblList").DataTable({
+            bLengthChange: true,
+            lengthMenu: [[10, 20, -1], [10, 20, "All"]],
+            bFilter: true,
+            bSort: true,
+            bPaginate: true,
+            data: response,
+            columns: [                
+                { 'data': 'empcode' },
+                { 'data': 'empname' },
+                { 'data': 'designation' },
+                { 'data': 'typ' },
+                {
+                    'data': 'punchdt',
+                    'render': function (jsonDate) {
+                        var date = new Date(parseInt(jsonDate.substr(6)));
+                        var month = ("0" + (date.getMonth() + 1)).slice(-2);
+                        return ("0" + date.getDate()).slice(-2) + '-' + month + '-' + date.getFullYear();
+                    }
+                    },
+                //{ 'data': 'punchtm' },
+                
+            ],
+            columnDefs: [{
+                "targets": "_all",
+                "data": null
+                //"defaultContent": "<a class='fa fa-list' onclick='GetUsersDetails(this)' title='Code Decode List' href='javascript:;'>View List</a>"
+            }]
+        });
+    };
+
+
+
+</script>
+
+
+@*<style>
+        .tb {
+            border-collapse: collapse;
+            width: 300px;
+        }
+
+            .tb th, .tb td {
+                padding: 5px;
+                border: solid 1px #777;
+            }
+
+            .tb th {
+                background-color: lightblue;
+            }
+    </style>*@
+
+<section class="section">
+    <h1 class="section-header">
+        <div>Active - Meal Card Members</div>
+    </h1>
+
+
+    <div class="section-body">
+       
+        <h2 class="section-title">Staff Data</h2>
+        <div class="row">
+            <table class="table table-bordered table-condensed table-hover table-striped tb" id="TblList">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.empcode)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.empname)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.designation)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.typ)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.punchdt)
+                        </th>
+                        @*<th>
+                            @Html.DisplayNameFor(model => model.punchtm)
+                        </th>*@
+                       
+
+
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+
+
+
